@@ -1,0 +1,40 @@
+{% extends 'layouts/site_page.html'%}
+
+{% block page_title %}| Главная страница{% endblock %}
+{%block authinfo%} 
+    {%if auth == False%}
+        <a href="/login/">Войти</a> или <a href="/registration/">Зарегистрироваться</a>
+    {%endif%}
+    {%if auth == True%}
+        <b>Вы успешно вошли! <a href="logout/">Выйти</a></b>
+        <br>
+        <a href="/cards/">Корзина</a>
+    {%endif%}
+{% endblock %}
+{% block title %}Главная страница{% endblock %}
+{% block content %}
+<h1><b>Рекомендуем:</b></h1>
+
+{% for item in items %}
+<form method="POST" action="{% url 'action_click' %}">
+    {% csrf_token %}
+    <br>
+    <hr>
+    <hr>
+    <hr>
+    <input type="hidden" name="item_id" value="{{ item.id }}">
+    <h>{{ item.title }}</h>
+    <p>{{item.description}}</p>
+    <button type="submit" name="action" value="add_to_wishlist">
+        Добавить в корзину
+    </button>
+    <hr>
+    <hr>
+    <hr>
+    <br>
+    
+</form>
+{% endfor %}
+
+
+{% endblock %}

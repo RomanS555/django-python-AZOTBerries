@@ -1,0 +1,25 @@
+{% extends 'layouts/site_page.html'%}
+{% block page_title %}| Ваша корзина{% endblock %}
+{% block title %}Корзина{% endblock %}
+{%block content%}
+{% for item in items %}
+<form method="POST" action="{% url 'action_click' %}">
+    {% csrf_token %}
+    <br>
+    <hr>
+    <hr>
+    <hr>
+    <input type="hidden" name="item_id" value="{{ item.id }}">
+    <h>{{ item.title }}</h>
+    <p>{{item.description}}</p>
+    <button type="submit" name="action" value="delete">
+        Убрать
+    </button>
+    <hr>
+    <hr>
+    <hr>
+    <br>
+    
+</form>
+{% endfor %}
+{%endblock%}

@@ -1,0 +1,95 @@
+{% extends 'layouts/site_page.html'%}
+
+{% block page_title %}| Регистрация{% endblock %}
+{% block title %}Регистрация{% endblock %}
+{% block content %}
+<form method="POST" onsubmit="return validateForm()">
+    {% csrf_token %}
+    
+    <p>
+        <h>Придумайте логин:</h>
+        <br>
+        {{form.login}}
+        
+    </p>
+    <p>
+        <br>
+        <h>Придумайте пароль:</h>
+        <br>
+        {{form.password}}
+        <span id="password-error" style="color: red; display: none;"></span>
+    </p>
+    <p>
+        <h>Повторите пароль:</h>
+        <br>
+        {{form.password1}}
+    </p>
+    <br>
+    {{error}}
+    <hr>
+    <span id="confirm-error" style="color: red; display: none;"></span>
+    <button type="submit">Регистрация</button>
+    <script>
+        // 1. Проверка при вводе
+        function checkPasswords() {
+            const password = document.getElementById('password').value;
+            const confirm = document.getElementById('password_confirm').value;
+            const errorElement = document.getElementById('confirm-error');
+            
+            if (password !== confirm) {
+                errorElement.textContent = 'Пароли не совпадают';
+                errorElement.style.display = 'block';
+                return false;
+            } else {
+                errorElement.style.display = 'none';
+                return true;
+            }
+        }
+        
+        // 2. Проверка перед отправкой формы
+        function validateForm() {
+            const password = document.getElementById('password').value;
+            const confirm = document.getElementById('password_confirm').value;
+            
+            // Проверка сложности пароля
+            if (password.length < 8) {
+                alert('Пароль должен содержать минимум 8 символов');
+                return false;
+            }
+            
+            // Проверка совпадения
+            if (password !== confirm) {
+                alert('Пароли не совпадают');
+                return false;
+            }
+            
+            return true;
+        }
+        
+        // 3. Валидация в реальном времени
+        document.getElementById('password').addEventListener('input', function() {
+            const password = this.value;
+            const errorElement = document.getElementById('password-error');
+            
+            // Сброс ошибки
+            errorElement.style.display = 'none';
+            
+            // Проверка минимальной длины
+            if (password.length > 0 && password.length < 8) {
+                errorElement.textContent = 'Минимум 8 символов';
+                errorElement.style.display = 'block';
+            }
+            
+            // Проверка наличия цифр и букв
+            const hasLetter = /[a-zA-Z]/.test(password);
+            const hasNumber = /\d/.test(password);
+            
+            if (password.length >= 8 && (!hasLetter || !hasNumber)) {
+                errorElement.textContent = 'Должны быть буквы и цифры';
+                errorElement.style.display = 'block';
+            }
+        });
+        </script>
+</form>
+
+{% endblock %}

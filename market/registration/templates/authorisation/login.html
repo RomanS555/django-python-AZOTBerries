@@ -1,0 +1,30 @@
+{% extends 'layouts/site_page.html'%}
+
+{% block page_title %}| Авторизация{% endblock %}
+{% block title %}Авторизация{% endblock %}
+{% block content %}
+
+<form method="POST">
+    {% csrf_token %}
+    <p>
+        <h>Введите логин:</h>
+        <br>
+        {{form.login}}
+        
+    </p>
+    <p>
+        <br>
+        <h>Введите пароль:</h>
+        <br>
+        {{form.password}}
+        
+    </p>
+    <br>
+    {{error}}
+    <br>
+    <button type="submit">Войти</button>
+    <a href="/registration/">У меня нет аккаунта</a>
+</form>
+    
+
+{% endblock %}
